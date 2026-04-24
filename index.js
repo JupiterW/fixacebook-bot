@@ -18,7 +18,8 @@ const PLATFORMS = [
   {
     regex: /https?:\/\/(www\.)?instagram\.com\/reel\/[^\s]+/g,
     find: "instagram.com",
-    replace: "ddinstagram.com",
+    replace: "eeinstagram.com",
+    stripQuery: true,
   },
 ];
 
@@ -33,9 +34,11 @@ client.on("messageCreate", async (message) => {
   for (const platform of PLATFORMS) {
     const matches = message.content.match(platform.regex);
     if (matches) {
-      matches.forEach((url) =>
-        fixedUrls.push(url.replace(platform.find, platform.replace))
-      );
+      matches.forEach((url) => {
+        let fixed = url.replace(platform.find, platform.replace);
+        if (platform.stripQuery) fixed = fixed.split("?")[0];
+        fixedUrls.push(fixed);
+      });
     }
   }
 
