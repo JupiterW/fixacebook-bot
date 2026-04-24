@@ -9,7 +9,18 @@ const client = new Client({
   ],
 });
 
-const REEL_REGEX = /https?:\/\/(www\.)?facebook\.com\/(reels?|[^/\s]+\/videos)\/[^\s]+/g;
+const PLATFORMS = [
+  {
+    regex: /https?:\/\/(www\.)?facebook\.com\/(reels?|[^/\s]+\/videos)\/[^\s]+/g,
+    find: "facebook.com",
+    replace: "fixacebook.com",
+  },
+  {
+    regex: /https?:\/\/(www\.)?instagram\.com\/reel\/[^\s]+/g,
+    find: "instagram.com",
+    replace: "ddinstagram.com",
+  },
+];
 
 client.once("clientReady", () => {
   console.log(`Logged in as ${client.user.tag}`);
@@ -18,12 +29,17 @@ client.once("clientReady", () => {
 client.on("messageCreate", async (message) => {
   if (message.author.id === client.user.id) return;
 
-  const matches = message.content.match(REEL_REGEX);
-  if (!matches) return;
+  const fixedUrls = [];
+  for (const platform of PLATFORMS) {
+    const matches = message.content.match(platform.regex);
+    if (matches) {
+      matches.forEach((url) =>
+        fixedUrls.push(url.replace(platform.find, platform.replace))
+      );
+    }
+  }
 
-  const fixedUrls = matches.map((url) =>
-    url.replace("facebook.com", "fixacebook.com")
-  );
+  if (!fixedUrls.length) return;
 
   const [reply] = await Promise.allSettled([
     message.reply(fixedUrls.join("\n")),
