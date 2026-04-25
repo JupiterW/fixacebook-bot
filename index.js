@@ -24,7 +24,7 @@ const PLATFORMS = [
   {
     regex: /https?:\/\/(www\.)?tiktok\.com\/(t\/[^\s]+|@[^/\s]+\/video\/[^\s]+)/g,
     find: "tiktok.com",
-    replace: "vxtiktok.com",
+    replace: "tnktok.com",
     stripQuery: true,
   },
 ];
