@@ -21,6 +21,12 @@ const PLATFORMS = [
     replace: "eeinstagram.com",
     stripQuery: true,
   },
+  {
+    regex: /https?:\/\/(www\.)?tiktok\.com\/(t\/[^\s]+|@[^/\s]+\/video\/[^\s]+)/g,
+    find: "tiktok.com",
+    replace: "vxtiktok.com",
+    stripQuery: true,
+  },
 ];
 
 client.once("clientReady", () => {
