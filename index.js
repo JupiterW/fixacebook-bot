@@ -30,7 +30,10 @@ const PLATFORMS = [
 ];
 
 client.once("clientReady", () => {
-  console.log(`Logged in as ${client.user.tag}`);
+  console.log(`[${new Date().toISOString()}] Logged in as ${client.user.tag}`);
+  setInterval(() => {
+    console.log(`[${new Date().toISOString()}] Heartbeat - bot is alive, ping: ${client.ws.ping}ms`);
+  }, 60_000);
 });
 
 client.on("messageCreate", async (message) => {
@@ -49,6 +52,9 @@ client.on("messageCreate", async (message) => {
   }
 
   if (!fixedUrls.length) return;
+
+  console.log(`[${new Date().toISOString()}] Fixing ${fixedUrls.length} URL(s) in #${message.channel.name} from ${message.author.tag}`);
+  fixedUrls.forEach((url) => console.log(`  → ${url}`));
 
   const [reply] = await Promise.allSettled([
     message.reply(fixedUrls.join("\n")),
