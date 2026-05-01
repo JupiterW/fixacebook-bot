@@ -18,7 +18,7 @@ const PLATFORMS = [
   {
     regex: /https?:\/\/(www\.)?instagram\.com\/reel\/[^\s]+/g,
     find: "instagram.com",
-    replace: "eeinstagram.com",
+    replace: "vxinstagram.com",
     stripQuery: true,
   },
   {
